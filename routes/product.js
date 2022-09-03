@@ -24,8 +24,22 @@ productRoutes.get("/", (req, res) => {
 });
 // manage Products
 productRoutes.get("/manage", async (req, res) => {
-  const doc = await Product.find({});
-  res.render("manage.ejs", { products: doc });
+  // check authentication by cookies
+  // if (req.cookies.login) {
+  //   const doc = await Product.find({});
+  //   res.render("manage.ejs", { products: doc });
+  // } else {
+  //   res.render("404");
+  // }
+  // check authentication by session
+  if (req.session.login) {
+    const doc = await Product.find({});
+    res.render("manage.ejs", { products: doc });
+  } else {
+    res.redirect("add-product");
+  }
+  console.log("id Session = ", req.sessionID);
+  console.log("data of session : ", req.session);
 });
 
 // show product
@@ -39,7 +53,16 @@ productRoutes.get("/product/:id", (req, res) => {
 
 // add product
 productRoutes.get("/add-product", (req, res) => {
-  res.render("form.ejs");
+  // if (req.cookies.login) {
+  //   res.render("form.ejs");
+  // } else {
+  //   res.render("admin");
+  // }
+  if (req.session.login) {
+    res.render("form.ejs");
+  } else {
+    res.render("admin");
+  }
 });
 
 // link => params
@@ -92,6 +115,42 @@ productRoutes.post("/update-form", (req, res) => {
       res.redirect("/");
     }
   );
+});
+
+// cookie
+productRoutes.post("/login", (req, res) => {
+  const { username, password } = req.body;
+  const timeExpire = 30000; // 10 sec
+  if (username === "admin" && password === "123") {
+    // make cookie
+    // res.cookie("username", username, { maxAge: timeExpire });
+    // res.cookie("password", password, { maxAge: timeExpire });
+    // res.cookie("login", true, { maxAge: timeExpire }); // true => login success
+
+    // make session
+    req.session.username = username;
+    req.session.password = password;
+    req.session.login = true;
+    req.session.cookie.maxAge = timeExpire;
+
+    res.redirect("/manage");
+  } else {
+    res.render("404");
+  }
+});
+
+productRoutes.get("/logout", (req, res) => {
+  // logout clear cookie
+  // res.clearCookie("username");
+  // res.clearCookie("password");
+  // res.clearCookie("login");
+  // res.redirect("/manage");
+
+  // logout clear session
+  req.session.destroy((err) => {
+    if (err) return console.log(err);
+    res.redirect("/manage");
+  });
 });
 
 module.exports = productRoutes;

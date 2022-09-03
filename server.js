@@ -1,10 +1,21 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
 const app = express();
 
 // middleware
 require("dotenv").config;
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }));
+app.use(
+  session({
+    resave: false,
+    secret: "mySession",
+    saveUninitialized: false,
+  })
+);
 
 // mongoose
 mongoose
@@ -17,8 +28,6 @@ mongoose
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
-
-app.use(express.urlencoded({ extended: false }));
 
 // routes
 app.use(express.static(path.join(__dirname, "public")));
