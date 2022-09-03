@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>sdfs</h1>
+    <h2><%= name %></h2>
+    <h2><%= age %></h2>
+    <h2><%- address %></h2>
+    <h3>Condition</h3>
+    <!-- if -->
+    <% if(age < 17) { %>
+    <p>yes</p>
+    <% } else if(age < 25) { %>
+    <p>normal</p>
+
+    <%} else {%>
+    <p>no</p>
+    <% } %>
+    <!-- if -->
+    <!-- for -->
+    <% for(let i=0;i< 10 ;i++) { %>
+    <p><%- i+1 %></p>
+    <% } %> <% for(index in products) { %>
+    <p><%- products[index] %></p>
+    <% } %>
+    <!-- array -->
+    <p><%- products %></p>
+    <p><%- products[0] %></p>
+    <!-- object -->
+    <h1>ob</h1>
+    <img src="<%- products1[0].image %>" alt="" width="100" />
+    <p><%- products1[0].name %></p>
+    <p><%- products1[0].price %></p>
+    <hr />
+    <!-- object -->
+    <% Object.values(products1).forEach(function(item){ %>
+    <img src="<%= item.image %>" alt="" width="100" />
+    <p><%- item.name %></p>
+    <p><%- item.price %></p>
+    <hr />
+    <%}) %>
+  </body>
+</html>
