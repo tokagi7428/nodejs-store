@@ -38,8 +38,8 @@ productRoutes.get("/manage", async (req, res) => {
   } else {
     res.redirect("add-product");
   }
-  console.log("id Session = ", req.sessionID);
-  console.log("data of session : ", req.session);
+  // console.log("id Session = ", req.sessionID);
+  // console.log("data of session : ", req.session);
 });
 
 // show product
