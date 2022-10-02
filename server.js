@@ -32,7 +32,9 @@ app.set("view engine", "ejs");
 // routes
 app.use(express.static(path.join(__dirname, "public")));
 const productRoutes = require("./routes/product.js");
+const userRoutes = require("./routes/user.js");
 app.use(productRoutes);
+app.use(userRoutes);
 
 // ports
 const PORT = process.env.PORT || 5000;
